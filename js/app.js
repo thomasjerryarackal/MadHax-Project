@@ -1,4 +1,4 @@
-function shuffleA(array)
+function shuffleA(array)//Fisher Yates to shuffle this array//
       {
          
           var m = array.length, t, i;
@@ -12,11 +12,12 @@ function shuffleA(array)
                        }
       }
 
-function cleartable()
+function cleartable()//To clear Table//
 {
     var tbody=document.getElementById("Bbody");
     var row=tbody.getElementsByTagName('tr');
     var rownum=row.length;
+  
     for(var x=rownum-1;x>-1;x--)
     {
         tbody.removeChild(row[x]);
@@ -50,21 +51,57 @@ function display()
     }
 }
 
-function project()
+function project()///To project the shuffled Table//
 {
  shuffleA(TABLE_DATA); 
  display();
      
 }
-function gathering(array,comp)
+function post(a,b)// function to compare//
 {
-    
+    return parseFloat(b.price)-parseFloat(a.price)
+}
 
+function compID(a,b)//function to compare price with id//
+{
+    return parseFloat(b.id)-parseFloat(a.id)
+}
+
+function gathering(array,comp)//this is function for sorting (price,id)//
+{
     array.sort(comp);
+    var top,bot;// top to bottom in same price//
+    for(var i=0;i<10;i++)
+    {
+        var a=array[i].price;
+        var b=array[i+1].price;
+        if(b==a)
+        {
+            top=i;
+            for(var j=i;j<10;j++)
+            {
+                var m=a;
+                var n=array[j+1].price;
+                if(m!=n)
+                {
+                    bot=j+1;
+                    break;
+
+                }
+            }
+            break;
+        }
+    }
+    array=partialSort(array,top,bot);
     display();
 }
 
-function post(a,b)
+function partialSort(array,start,end)//to sort table row//
 {
- return parseFloat(b.price) - parseFloat(a.price)
+    var presorted=array.slice(0,start);
+    var postsorted=array.slice(end);
+    var sorted=array.slice(start,end).sort(compID);
+    array.length=0;
+    array.push.apply(array,presorted.concat(sorted).concat(postsorted));
+    return array
 }
